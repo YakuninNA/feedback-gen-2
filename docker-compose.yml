@@ -3,7 +3,7 @@ version: '3.12'
 services:
   app:
     build:
-      context: .          # <--- This should be "."
+      context: .
       dockerfile: Dockerfile
     container_name: gen_service_app
     ports:
@@ -11,15 +11,14 @@ services:
     volumes:
       - ./src:/app
     environment:
-      PYTHONUNBUFFERED: "1"
-      PYTHONPATH: "/app"
-      REDIS_HOST: "redis"
-      REDIS_PORT: "6379"
-      API_KEY: "${API_KEY}"
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - API_KEY=${API_KEY}
     depends_on:
       - redis
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    restart: always
 
   worker:
     build:
@@ -29,24 +28,18 @@ services:
     volumes:
       - ./src:/app
     environment:
-      PYTHONUNBUFFERED: "1"
-      PYTHONPATH: "/app"
-      REDIS_HOST: "redis"
-      REDIS_PORT: "6379"
-      API_KEY: "${API_KEY}"
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - API_KEY=${API_KEY}
     depends_on:
       - redis
     command: arq genservice.arq_worker.WorkerSettings
-    restart: always
 
   redis:
     image: redis:6.2
     container_name: redis_queue
     ports:
       - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    restart: always
+
