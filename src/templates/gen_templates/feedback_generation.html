@@ -1,0 +1,28 @@
+{% extends "functionality_page.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <h2 class="text-2xl font-bold text-indigo-600">Feedback Generation</h2>
+    <form action="/functionality/feedback_generation" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="transcript" class="form-label">Upload Transcript</label>
+            <input type="file" required class="form-control" id="transcript" name="transcript" accept=".json">
+        </div>
+        <div class="mb-3">
+            <label for="requirements" class="form-label">Requirements</label>
+            <input type="text" required class="form-control" id="requirements" name="requirements" placeholder="Position requirements">
+        </div>
+        <div class="mb-3">
+            <label for="position" class="form-label">Position</label>
+            <input type="text" required class="form-control" id="position" name="position" placeholder="Position name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock content %}

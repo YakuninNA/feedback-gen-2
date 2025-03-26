@@ -1,0 +1,25 @@
+{% extends "functionality_page.html" %}
+
+{% block content %}
+<div class="text-center">
+    <p id="status-message" class="text-lg text-gray-700 mb-4">
+        Your feedback is being processed. Please wait while we generate your report.
+    </p>
+</div>
+
+<script>
+    const jobId = "{{ job_id }}";
+    const statusUrl = `/functionality/feedback_status/${jobId}`;
+    const downloadUrl = `/functionality/download_feedback/${jobId}`;
+
+    function saveJobId(jobId) {
+        const activeJobs = JSON.parse(localStorage.getItem("activeJobs") || "[]");
+        if (!activeJobs.includes(jobId)) {
+            activeJobs.push(jobId);
+            localStorage.setItem("activeJobs", JSON.stringify(activeJobs));
+        }
+    }
+
+    saveJobId(jobId);
+</script>
+{% endblock content %}
