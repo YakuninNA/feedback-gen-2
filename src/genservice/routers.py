@@ -19,7 +19,7 @@ router = APIRouter(
 )
 
 
-templates = Jinja2Templates(directory="/app/templates/gen_templates")
+templates = Jinja2Templates(directory="src/templates/gen_templates")
 
 
 @router.get("/home", response_class=HTMLResponse)
